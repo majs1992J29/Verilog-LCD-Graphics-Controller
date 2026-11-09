@@ -71,32 +71,18 @@ Verilog-LCD-Graphics-Controller/
 
 The **`LCD_SYNC`** module provides timing and display coordinates. Image and text modules use these coordinates to access their respective ROM data. The final **`texto_imagen_LCD`** module combines both sources to drive the RGB LCD outputs.
 
-```text
-                  Input clock / reset
-                          |
-                     +----------+
-                     | LCD_SYNC |
-                     +----------+
-                        |    |
-            timing / RGB enable / coordinates
-                        |    |
-             +----------+    +-----------+
-             |                           |
-     +----------------+          +----------------+
-     | Image address  |          | Text address   |
-     | + image ROM    |          | + character ROM|
-     +----------------+          +----------------+
-             |                           |
-             +------------+--------------+
-                          |
-                 +------------------+
-                 | Image/text blend |
-                 | texto_imagen_LCD |
-                 +------------------+
-                          |
-                 RGB + LCD control
-                          |
-                       LCD panel
+```mermaid
+flowchart TD
+    INPUT["Input clock / reset"] --> SYNC["LCD_SYNC<br/>Timing and pixel coordinates"]
+    SYNC -->|Pixel coordinates| IMG["direccionamiento<br/>Image addressing"]
+    SYNC -->|Pixel coordinates| TXT["texto<br/>Text addressing"]
+    IMG --> ROMIMG["ROM5<br/>Image data"]
+    TXT --> ROMTXT["frase_5 and ROM_char<br/>Text and character data"]
+    ROMIMG --> BLEND["texto_imagen_LCD<br/>Image and text composition"]
+    ROMTXT --> BLEND
+    SYNC -->|Sync and display enable| BLEND
+    BLEND --> OUT["RGB and LCD control signals"]
+    OUT --> PANEL["LCD panel"]
 ```
 
 *The diagram summarizes the functional data flow; see the Verilog modules for actual signal connections and hierarchy.*
