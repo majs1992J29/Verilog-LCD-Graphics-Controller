@@ -140,6 +140,3 @@ This repository contains **Verilog source code, selected generated IP modules, t
 
 As a result, it is a **source-level implementation and verification reference**, rather than a ready-to-program Quartus project. The required board-specific setup must be recreated before compiling or deploying it on hardware.
 
-## Credits
-
-Original design work: **Miguel Jumbo** and **Marc Casacuberta**. Original author comments are retained in the HDL files.
